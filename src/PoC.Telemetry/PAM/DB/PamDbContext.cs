@@ -15,6 +15,12 @@ public class PamDbContext(DbContextOptions<PamDbContext> options) : DbContext(op
         modelBuilder.Entity<Wallet>()
             .HasKey(w => w.AccountId);
 
+        modelBuilder.Entity<Wallet>(wallet =>
+        {
+            wallet.Property(w => w.Balance).HasPrecision(18, 4);
+            wallet.Property(w => w.Reserved).HasPrecision(18, 4);
+        });
+
         modelBuilder.Entity<Account>()
             .HasOne(a => a.Wallet)
             .WithOne(w => w.Account)
