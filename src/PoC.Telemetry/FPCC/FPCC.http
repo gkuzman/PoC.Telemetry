@@ -1,0 +1,6 @@
+@FPCC_HostAddress = http://localhost:5161
+
+GET {{FPCC_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
