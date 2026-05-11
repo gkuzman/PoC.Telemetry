@@ -27,9 +27,10 @@ internal class AzureServiceBusHostedService : BackgroundService
                 await ManageServiceBusMessageHandlers(stoppingToken);
             }
         }
-        catch (TaskCanceledException)
+        catch (TaskCanceledException taskCanceledException)
         {
             // Graceful shutdown
+            var e = 3;
         }
         finally
         {

@@ -22,6 +22,10 @@ public class PamDbContext(DbContextOptions<PamDbContext> options) : DbContext(op
         });
 
         modelBuilder.Entity<Account>()
+            .Property(a => a.Id)
+            .ValueGeneratedNever();
+
+        modelBuilder.Entity<Account>()
             .HasOne(a => a.Wallet)
             .WithOne(w => w.Account)
             .HasForeignKey<Wallet>(w => w.AccountId);

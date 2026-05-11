@@ -7,7 +7,7 @@ using Shared.Messaging;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddOpenTelemetry("FPCC");
 builder.AddSqlServerDbContext<FpccDbContext>("fpcc-db");
 builder.AddAzureServiceBusClient("servicebus");
 
@@ -17,6 +17,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddServiceBusMessageHandler<InitiateWithdrawalMessage, InitiateWithdrawalMessageHandler>(
     queueOrTopicName: Const.WithdrawalIncomingQueueName);
+builder.Services.AddScoped<IWithdrawalService, WithdrawalService>();
 
 var app = builder.Build();
 

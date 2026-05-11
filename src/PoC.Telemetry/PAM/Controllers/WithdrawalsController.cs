@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Shared;
-using Shared.Contracts;
-using Shared.Messaging;
+using PAM.Services;
 
 namespace PAM.Controllers;
 
@@ -12,13 +10,13 @@ public sealed record InitiateWithdrawalMessageRequest(int AccountId, int Withdra
 public sealed class WithdrawalsController : ControllerBase
 {
     private readonly ILogger<WithdrawalsController> _logger;
-    private readonly IServiceBusSenderService _senderService;
+    private readonly IWithdrawalService _withdrawalService;
 
     public WithdrawalsController(
-        ILogger<WithdrawalsController> logger, IServiceBusSenderService senderService)
+        ILogger<WithdrawalsController> logger, IWithdrawalService withdrawalService)
     {
         _logger = logger;
-        _senderService = senderService;
+        _withdrawalService = withdrawalService;
     }
 
     [HttpPost]
@@ -38,20 +36,7 @@ public sealed class WithdrawalsController : ControllerBase
             return BadRequest("Amount must be a positive number.");
 
         var correlationId = HttpContext.TraceIdentifier;
-
-        var @event = new InitiateWithdrawalMessage(
-            AccountId: request.AccountId,
-            WithdrawalId: request.WithdrawalId,
-            Amount: request.Amount,
-            OccurredAt: DateTimeOffset.UtcNow,
-            CorrelationId: correlationId);
-
-        _logger.LogInformation(
-            "Publishing {EventType} for AccountId {AccountId} with CorrelationId {CorrelationId}",
-            nameof(InitiateWithdrawalMessage), request.AccountId, correlationId);
-
-        await _senderService.Send(@event, Const.WithdrawalIncomingQueueName, cancellationToken);
-
+        await _withdrawalService.Initiate(request, correlationId, cancellationToken);
         return Accepted();
     }
 }
