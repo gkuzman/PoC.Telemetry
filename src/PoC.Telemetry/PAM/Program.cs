@@ -1,10 +1,13 @@
 using PAM.DB;
+using Shared.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.AddSqlServerDbContext<PamDbContext>("pam-db");
+builder.AddAzureServiceBusClient("servicebus");
+builder.Services.AddServiceBusSenderService();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

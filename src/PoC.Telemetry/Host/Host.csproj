@@ -16,6 +16,7 @@
     <ItemGroup>
       <ProjectReference Include="..\FPCC\FPCC.csproj" />
       <ProjectReference Include="..\PAM\PAM.csproj" />
+      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,14 +1,22 @@
 using FPCC.DB;
+using FPCC.Services;
+using Shared;
+using Shared.Contracts;
+using Shared.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.AddSqlServerDbContext<FpccDbContext>("fpcc-db");
+builder.AddAzureServiceBusClient("servicebus");
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddServiceBusMessageHandler<InitiateWithdrawalMessage, InitiateWithdrawalMessageHandler>(
+    queueOrTopicName: Const.WithdrawalIncomingQueueName);
 
 var app = builder.Build();
 
