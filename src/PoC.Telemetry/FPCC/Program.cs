@@ -1,3 +1,4 @@
+using FPCC;
 using FPCC.DB;
 using FPCC.Services;
 using Shared;
@@ -7,7 +8,7 @@ using Shared.Messaging;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddOpenTelemetry("FPCC");
+builder.Services.AddOpenTelemetry(TracingExtensions.Source.Name);
 builder.AddSqlServerDbContext<FpccDbContext>("fpcc-db");
 builder.AddAzureServiceBusClient("servicebus");
 

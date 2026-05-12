@@ -27,7 +27,7 @@ public static class TelemetryExtensions
             .WithMetrics()
             .WithLogging();
         AppContext.SetSwitch("Azure.Experimental.EnableActivitySource", true);
-        openTelemetryBuilder.WithTracing(builder => builder.AddSource("Azure.Messaging.ServiceBus.*"));
+        openTelemetryBuilder.WithTracing(builder => builder.AddSource("Azure.Messaging.ServiceBus"));
 
 
         return openTelemetryBuilder;

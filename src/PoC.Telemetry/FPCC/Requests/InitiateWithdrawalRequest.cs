@@ -3,7 +3,7 @@ using Shared.Contracts;
 
 namespace FPCC.Requests;
 
-public class InitiateWithdrawalRequest(InitiateWithdrawalMessage message) : TraceableRequestExtensions.TraceableRequest
+public class InitiateWithdrawalRequest(InitiateWithdrawalMessage message) : TraceableRequest
 {
     public int AccountId { get; } = message.AccountId;
     public int WithdrawalId { get; } = message.WithdrawalId;

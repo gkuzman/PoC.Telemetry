@@ -14,7 +14,7 @@ public static class TraceableRequestExtensions
             request.RequestHeaders, (headers, key, value) => headers[key] = [value]);
     }
 
-    public static Activity? StartNewSpanFromRequest(this TraceableRequest request)
+    public static Activity? StartNewSpanFromRequest(this TraceableRequest request, ActivitySource? source = null)
     {
         var context = Propagators.DefaultTextMapPropagator.Extract(
             new PropagationContext(Activity.Current?.Context ?? new ActivityContext(), Baggage.Current),
@@ -22,12 +22,14 @@ public static class TraceableRequestExtensions
 
         Baggage.Current = context.Baggage;
 
-        return Source.StartActivity($"Process {request.GetType().Name}",
+        source ??= Source;
+
+        return source.StartActivity($"Process {request.GetType().Name}",
             ActivityKind.Internal,
             context.ActivityContext);
     }
 
-    public static Activity? StartNewRootSpanFromRequest(this TraceableRequest request)
+    public static Activity? StartNewRootSpanFromRequest(this TraceableRequest request,  ActivitySource? source = null)
     {
         var context = Propagators.DefaultTextMapPropagator.Extract(
             new PropagationContext(Activity.Current?.Context ?? new ActivityContext(), Baggage.Current),
@@ -36,18 +38,20 @@ public static class TraceableRequestExtensions
         Baggage.Current = context.Baggage;
         Activity.Current = null;
 
-        return Source.StartActivity($"Process {request.GetType().Name}",
+        source ??= Source;
+
+        return source.StartActivity($"Process {request.GetType().Name}",
             ActivityKind.Server,
             new ActivityContext(),
             links: [new(context.ActivityContext)]);
     }
+}
 
-    public abstract class TraceableRequest
+public abstract class TraceableRequest
+{
+    public TraceableRequest()
     {
-        public TraceableRequest()
-        {
-            this.AddCurrentTraceContext();
-        }
-        public Dictionary<string, string[]> RequestHeaders { get; set; } = [];
+        this.AddCurrentTraceContext();
     }
+    public Dictionary<string, string[]> RequestHeaders { get; set; } = [];
 }

@@ -2,13 +2,77 @@
 
 
 ###
-### Publish a withdrawal message to Service Bus
+### basic example
 POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
 Content-Type: application/json
 
 {
   "accountId": 1,
+  "amount": 1.00,
+  "withdrawalId": 12345
+}
+
+###
+### basic span example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 2,
   "amount": 2.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### basic new root span example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 3,
+  "amount": 3.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 4,
+  "amount": 4.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 4.00,
+  "withdrawalId": 12345
+}
+
+###
+
+
+###
+### advanced new root span example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 6,
+  "amount": 6.00,
   "withdrawalId": 12345
 }
 
