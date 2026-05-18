@@ -1,0 +1,32 @@
+groups:
+  - id: registry.withdrawal
+    type: attribute_group
+    display_name: "Withdrawal attributes"
+    brief: >
+      Attributes describing a cash withdrawal operation.
+    attributes:
+      - id: fpcc.withdrawal.id
+        type: int
+        brief: >
+          The unique identifier of the withdrawal.
+        note: >
+          This is the system-generated withdrawal ID.
+        examples: [1, 2, 3]
+        stability: stable
+      - id: fpcc.withdrawal.amount
+        type: double
+        brief: >
+          The monetary amount of the withdrawal.
+        note: >
+          The amount requested for withdrawal, in the account's currency.
+        examples: [100.00, 250.50, 1000.00]
+        stability: stable
+      - id: fpcc.withdrawal.account_id
+        type: int
+        brief: >
+          The account identifier associated with the withdrawal.
+        note: >
+          This is the unique ID of the account from which funds are withdrawn.
+        examples: [1, 2, 3]
+        stability: stable
+

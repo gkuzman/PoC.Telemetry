@@ -1,0 +1,16 @@
+groups:
+  - id: registry.fraudforce
+    type: attribute_group
+    display_name: "FraudForce attributes"
+    brief: >
+      Attributes describing a FraudForce risk assessment.
+    attributes:
+      - id: fpcc.fraudforce.score
+        type: int
+        brief: >
+          The fraud risk score returned by the FraudForce engine.
+        note: >
+          A negative score indicates higher risk. Typically ranges from -10 to 10.
+        examples: [-3, 0, 5]
+        stability: stable
+
