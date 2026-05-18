@@ -1,6 +1,5 @@
-{%- set ns = ctx.class_prefix | default(ctx.root_namespace | pascal_case) -%}
-{%- set my_file_name  = ns ~ "Attributes.cs" -%}
-{%- set my_class_name = ns ~ "Attributes" -%}
+{%- set my_file_name  = ctx.root_namespace | pascal_case ~ "Attributes.cs" -%}
+{%- set my_class_name = ctx.root_namespace | pascal_case ~ "Attributes" -%}
 {{- template.set_file_name(my_file_name) -}}
 {%- macro attribute_name(attribute) -%}
 {{ attribute.name | pascal_case }}{%- if "template" in attribute.type -%}Template{%- endif -%}

@@ -12,7 +12,7 @@ namespace Shared;
 /// <summary>
 /// Constants for semantic attribute names outlined by the OpenTelemetry specifications.
 /// </summary>
-public static class TelemetryAttributes
+public static class FpccAttributes
 {
     /// <summary>
     /// The fraud risk score returned by the FraudForce engine.

@@ -37,82 +37,82 @@ public class WithdrawalService : IWithdrawalService
     private async Task AdvancedNewRootSpanExample(InitiateWithdrawalRequest request)
     {
         using var activity = request.StartNewRootSpanFromRequest(TracingExtensions.Source);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalId, request.WithdrawalId);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAmount, request.Amount);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAccountId, request.AccountId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
         await Task.Delay(1000);
 
         // mimic getting fraud force
         using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce");
-        activity2.SetTag(TelemetryAttributes.FpccFraudforceScore, -3);
+        activity2.SetTag(FpccAttributes.FpccFraudforceScore, -3);
         await Task.Delay(5000);
     }
 
     private async Task AdvancedSpanExample(InitiateWithdrawalRequest request)
     {
         using var activity = request.StartNewSpanFromRequest(TracingExtensions.Source);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalId, request.WithdrawalId);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAmount, request.Amount);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAccountId, request.AccountId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
         await Task.Delay(1000);
         activity.Stop();
 
         // mimic getting fraud force
         using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce");
-        activity2.SetTag(TelemetryAttributes.FpccFraudforceScore, -3);
+        activity2.SetTag(FpccAttributes.FpccFraudforceScore, -3);
         await Task.Delay(5000);
     }
 
     private async Task AdvancedSpanNoStopExample(InitiateWithdrawalRequest request)
     {
         using var activity = request.StartNewSpanFromRequest(TracingExtensions.Source);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalId, request.WithdrawalId);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAmount, request.Amount);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAccountId, request.AccountId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
         await Task.Delay(1000);
 
         // mimic getting fraud force
         using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce");
-        activity2.SetTag(TelemetryAttributes.FpccFraudforceScore, -3);
+        activity2.SetTag(FpccAttributes.FpccFraudforceScore, -3);
         await Task.Delay(5000);
     }
 
     private async Task BasicNewRootSpanExample(InitiateWithdrawalRequest request)
     {
         using var activity = request.StartNewRootSpanFromRequest(TracingExtensions.Source);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalId, request.WithdrawalId);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAmount, request.Amount);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAccountId, request.AccountId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
         await Task.Delay(1000);
 
         // mimic getting fraud force
-        activity.SetTag(TelemetryAttributes.FpccFraudforceScore, -3);
+        activity.SetTag(FpccAttributes.FpccFraudforceScore, -3);
         await Task.Delay(5000);
     }
 
     private async Task BasicSpanExample(InitiateWithdrawalRequest request)
     {
         using var activity = request.StartNewSpanFromRequest(TracingExtensions.Source);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalId, request.WithdrawalId);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAmount, request.Amount);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAccountId, request.AccountId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
         await Task.Delay(3000);
 
         // mimic getting fraud force
-        activity.SetTag(TelemetryAttributes.FpccFraudforceScore, -3);
+        activity.SetTag(FpccAttributes.FpccFraudforceScore, -3);
         await Task.Delay(5000);
     }
 
     private async Task BasicExample(InitiateWithdrawalRequest request)
     {
         var activity = Activity.Current;
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalId, request.WithdrawalId);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAmount, request.Amount);
-        activity.SetTag(TelemetryAttributes.FpccWithdrawalAccountId, request.AccountId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
         await Task.Delay(3000);
 
         // mimic getting fraud force
-        activity.SetTag(TelemetryAttributes.FpccFraudforceScore, -3);
+        activity.SetTag(FpccAttributes.FpccFraudforceScore, -3);
         await Task.Delay(5000);
     }
 }
