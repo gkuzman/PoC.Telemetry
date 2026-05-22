@@ -1,0 +1,34 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  debug:
+    verbosity: detailed
+  otlp_http/aspire:
+    endpoint: ${env:DOTNET_DASHBOARD_OTLP_HTTP_ENDPOINT_URL}
+    headers:
+      x-otlp-api-key: ${env:ASPIRE_API_KEY}
+    compression: none
+    tls:
+      insecure: true
+      insecure_skip_verify: true
+
+service:
+  telemetry:
+    logs:
+      level: debug
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [debug, otlp_http/aspire]
+    metrics:
+      receivers: [otlp]
+      exporters: [debug, otlp_http/aspire]
+    logs:
+      receivers: [otlp]
+      exporters: [debug, otlp_http/aspire]

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
+using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Shared.Messaging;
@@ -10,8 +11,9 @@ public static class TelemetryExtensions
 {
     public static IOpenTelemetryBuilder AddOpenTelemetry(this IServiceCollection services, string serviceName)
     {
+        var uri = Environment.GetEnvironmentVariable("CUSTOM_OTEL_EXPORTER_OTLP_ENDPOINT") ?? throw new InvalidOperationException("CUSTOM_OTEL_EXPORTER_OTLP_ENDPOINT environment variable is not set.");
         var openTelemetryBuilder = services.AddOpenTelemetry()
-            .UseOtlpExporter()
+            .UseOtlpExporter(OtlpExportProtocol.HttpProtobuf, new Uri(uri))
             .ConfigureResource(builder => builder.AddService(serviceName))
             .WithTracing(builder =>
             {
