@@ -9,6 +9,10 @@ receivers:
 exporters:
   debug:
     verbosity: detailed
+  otlp_http/honeycomb:
+    endpoint: https://api.honeycomb.io
+    headers:
+      x-honeycomb-team: ${env:HONEYCOMB_API_KEY}
   otlp_http/aspire:
     endpoint: ${env:DOTNET_DASHBOARD_OTLP_HTTP_ENDPOINT_URL}
     headers:
@@ -25,10 +29,10 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [debug, otlp_http/aspire]
+      exporters: [debug, otlp_http/aspire, otlp_http/honeycomb]
     metrics:
       receivers: [otlp]
-      exporters: [debug, otlp_http/aspire]
+      exporters: [debug, otlp_http/aspire, otlp_http/honeycomb]
     logs:
       receivers: [otlp]
-      exporters: [debug, otlp_http/aspire]
+      exporters: [debug, otlp_http/aspire, otlp_http/honeycomb]

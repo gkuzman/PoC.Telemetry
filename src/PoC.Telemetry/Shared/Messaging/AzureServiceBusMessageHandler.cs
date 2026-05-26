@@ -12,7 +12,6 @@ internal class AzureServiceBusMessageHandler<TServiceBusMessageType, TServiceBus
   private readonly ILogger<AzureServiceBusMessageHandler<TServiceBusMessageType, TServiceBusMessageHandler>> _logger;
   private readonly AzureServiceBusMessageHandlerOptions _options;
   private readonly IServiceProvider _serviceProvider;
-  private bool _isProcessing = false;
 
   public AzureServiceBusMessageHandler(
     ILogger<AzureServiceBusMessageHandler<TServiceBusMessageType, TServiceBusMessageHandler>> logger,
@@ -37,29 +36,15 @@ internal class AzureServiceBusMessageHandler<TServiceBusMessageType, TServiceBus
   }
 
 
-  public async Task ManageMessageHandlerStatus(CancellationToken cancellationToken)
-  {
-    switch (_isProcessing)
-    {
-      case false:
-        await StartAsync(cancellationToken);
-        break;
-      case true:
-        await StopAsync(cancellationToken);
-        break;
-    }
-  }
 
   public async Task StartAsync(CancellationToken cancellationToken)
   {
     await _processor.StartProcessingAsync(cancellationToken);
-    _isProcessing = true;
   }
 
   public async Task StopAsync(CancellationToken cancellationToken)
   {
-    await _processor!.StopProcessingAsync(cancellationToken);
-    _isProcessing = false;
+    await _processor.StopProcessingAsync(cancellationToken);
   }
 
   public string GetName()
@@ -69,7 +54,15 @@ internal class AzureServiceBusMessageHandler<TServiceBusMessageType, TServiceBus
 
   private Task ErrorHandler(ProcessErrorEventArgs arg)
   {
-    _logger.LogError(arg.Exception, "Exception in ServiceBusProcessor. ErrorSource={ErrorSource} EntityPath={EntityPath}", arg.ErrorSource, arg.EntityPath);
+    // TaskCanceledException is expected during graceful shutdown — log at debug to avoid noise.
+    if (arg.Exception is TaskCanceledException or OperationCanceledException)
+    {
+      _logger.LogDebug(arg.Exception, "Service Bus processor cancelled (likely graceful shutdown). ErrorSource={ErrorSource} EntityPath={EntityPath}", arg.ErrorSource, arg.EntityPath);
+    }
+    else
+    {
+      _logger.LogError(arg.Exception, "Exception in ServiceBusProcessor. ErrorSource={ErrorSource} EntityPath={EntityPath}", arg.ErrorSource, arg.EntityPath);
+    }
     return Task.CompletedTask;
   }
 
@@ -102,9 +95,6 @@ internal class AzureServiceBusMessageHandler<TServiceBusMessageType, TServiceBus
     catch (Exception ex)
     {
       await HandleException(args, ex, _options.QueueOrTopicName);
-    }
-    finally
-    {
     }
   }
 

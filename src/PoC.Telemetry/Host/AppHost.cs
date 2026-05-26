@@ -28,7 +28,8 @@ var collector = builder.AddContainer("otel-collector", "otel/opentelemetry-colle
     .WithEndpoint(port: 4317, targetPort: 4317, name: "grpc", scheme: "http", isProxied: false)
     .WithEndpoint(port: 4318, targetPort: 4318, name: "http", scheme: "http", isProxied: false)
     .WithEnvironment("DOTNET_DASHBOARD_OTLP_HTTP_ENDPOINT_URL", $"http://{hostIp}:16175")
-    .WithEnvironment("ASPIRE_API_KEY", "9d9ef33b72b8f63709748cff4916cbf7");
+    .WithEnvironment("ASPIRE_API_KEY", "9d9ef33b72b8f63709748cff4916cbf7")
+    .WithEnvironment("HONEYCOMB_API_KEY", Environment.GetEnvironmentVariable("HONEYCOMB_API_KEY") ?? throw new InvalidOperationException("HONEYCOMB_API_KEY is not configured."));
 
 var pam = builder.AddProject<Projects.PAM>("PAM")
     .WithReference(dbPam)

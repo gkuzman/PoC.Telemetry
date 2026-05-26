@@ -18,52 +18,51 @@ internal class AzureServiceBusHostedService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        await StartServiceBusMessageHandlers(stoppingToken);
+
         try
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                // Keep the service alive until it is stopped
-                await Task.Delay(1000, stoppingToken);
-                await ManageServiceBusMessageHandlers(stoppingToken);
-            }
+            await Task.Delay(Timeout.Infinite, stoppingToken);
         }
-        catch (TaskCanceledException taskCanceledException)
+        catch (OperationCanceledException)
         {
-            // Graceful shutdown
-            var e = 3;
+            // Graceful shutdown — expected when the host is stopping.
+            _logger.LogInformation("Azure Service Bus hosted service is stopping.");
         }
         finally
         {
-            await StopServiceBusMessageHandlers(stoppingToken);
+            await StopServiceBusMessageHandlers(CancellationToken.None);
         }
     }
 
-    private async Task ManageServiceBusMessageHandlers(CancellationToken stoppingToken)
+    private async Task StartServiceBusMessageHandlers(CancellationToken cancellationToken)
     {
         foreach (var messageHandler in _messageHandlers)
         {
             try
             {
-                await messageHandler.ManageMessageHandlerStatus(stoppingToken);
+                await messageHandler.StartAsync(cancellationToken);
+                _logger.LogInformation("Started Service Bus message handler for {HandlerName}.", messageHandler.GetName());
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Failed to update the '{messageHandler.GetName()}' service bus message handler, please review the connection error! Message: {e.Message}");
+                _logger.LogError(e, "Failed to start the {HandlerName} Service Bus message handler.", messageHandler.GetName());
             }
         }
     }
 
-    private async Task StopServiceBusMessageHandlers(CancellationToken stoppingToken)
+    private async Task StopServiceBusMessageHandlers(CancellationToken cancellationToken)
     {
         foreach (var messageHandler in _messageHandlers)
         {
             try
             {
-                await messageHandler.StopAsync(stoppingToken);
+                await messageHandler.StopAsync(cancellationToken);
+                _logger.LogInformation("Stopped Service Bus message handler for {HandlerName}.", messageHandler.GetName());
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"Failed to stop the '{messageHandler.GetName()}' service bus message handler, please review the connection error! Message: {e.Message}");
+                _logger.LogError(e, "Failed to stop the {HandlerName} Service Bus message handler.", messageHandler.GetName());
             }
         }
     }
