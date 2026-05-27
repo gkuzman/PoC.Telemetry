@@ -11,10 +11,13 @@ Attributes describing a cash withdrawal operation.
 |---|---|---|---|---|
 | <a id="fpcc-withdrawal-account-id" href="#fpcc-withdrawal-account-id">`fpcc.withdrawal.account_id`</a> | int | The account identifier associated with the withdrawal. [1] | `1`; `2`; `3` | ![Stable](https://img.shields.io/badge/-stable-lightgreen) |
 | <a id="fpcc-withdrawal-amount" href="#fpcc-withdrawal-amount">`fpcc.withdrawal.amount`</a> | double | The monetary amount of the withdrawal. [2] | `100.0`; `250.5`; `1000.0` | ![Stable](https://img.shields.io/badge/-stable-lightgreen) |
-| <a id="fpcc-withdrawal-id" href="#fpcc-withdrawal-id">`fpcc.withdrawal.id`</a> | int | The unique identifier of the withdrawal. [3] | `1`; `2`; `3` | ![Stable](https://img.shields.io/badge/-stable-lightgreen) |
+| <a id="fpcc-withdrawal-iban" href="#fpcc-withdrawal-iban">`fpcc.withdrawal.iban`</a> | string | The IBAN of the account associated with the withdrawal. [3] | `DE89370400440532013000`; `GB29NWBK60161331926819` | ![Stable](https://img.shields.io/badge/-stable-lightgreen) |
+| <a id="fpcc-withdrawal-id" href="#fpcc-withdrawal-id">`fpcc.withdrawal.id`</a> | int | The unique identifier of the withdrawal. [4] | `1`; `2`; `3` | ![Stable](https://img.shields.io/badge/-stable-lightgreen) |
 
 **[1] `fpcc.withdrawal.account_id`:** This is the unique ID of the account from which funds are withdrawn.
 
 **[2] `fpcc.withdrawal.amount`:** The amount requested for withdrawal, in the account's currency.
 
-**[3] `fpcc.withdrawal.id`:** This is the system-generated withdrawal ID.
+**[3] `fpcc.withdrawal.iban`:** This is the International Bank Account Number for the account from which funds are withdrawn.
+
+**[4] `fpcc.withdrawal.id`:** This is the system-generated withdrawal ID.

@@ -40,12 +40,13 @@ public class WithdrawalService : IWithdrawalService
         activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
         activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
         activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalIban, "NL18RABO0123459876");
         await Task.Delay(1000);
 
         // mimic getting fraud force
-        using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce");
+        using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce", ActivityKind.Internal, activity.Context);
         activity2.SetTag(FpccAttributes.FpccFraudforceScore, -3);
-        await Task.Delay(5000);
+        await Task.Delay(2000);
     }
 
     private async Task AdvancedSpanExample(InitiateWithdrawalRequest request)
@@ -60,7 +61,7 @@ public class WithdrawalService : IWithdrawalService
         // mimic getting fraud force
         using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce");
         activity2.SetTag(FpccAttributes.FpccFraudforceScore, -3);
-        await Task.Delay(5000);
+        await Task.Delay(2000);
     }
 
     private async Task AdvancedSpanNoStopExample(InitiateWithdrawalRequest request)
@@ -72,9 +73,9 @@ public class WithdrawalService : IWithdrawalService
         await Task.Delay(1000);
 
         // mimic getting fraud force
-        using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce");
+        using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce", ActivityKind.Internal, activity.Context);
         activity2.SetTag(FpccAttributes.FpccFraudforceScore, -3);
-        await Task.Delay(5000);
+        await Task.Delay(2000);
     }
 
     private async Task BasicNewRootSpanExample(InitiateWithdrawalRequest request)
@@ -87,7 +88,7 @@ public class WithdrawalService : IWithdrawalService
 
         // mimic getting fraud force
         activity.SetTag(FpccAttributes.FpccFraudforceScore, -3);
-        await Task.Delay(5000);
+        await Task.Delay(2000);
     }
 
     private async Task BasicSpanExample(InitiateWithdrawalRequest request)
@@ -96,11 +97,11 @@ public class WithdrawalService : IWithdrawalService
         activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
         activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
         activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
-        await Task.Delay(3000);
+        await Task.Delay(1000);
 
         // mimic getting fraud force
         activity.SetTag(FpccAttributes.FpccFraudforceScore, -3);
-        await Task.Delay(5000);
+        await Task.Delay(2000);
     }
 
     private async Task BasicExample(InitiateWithdrawalRequest request)
@@ -109,10 +110,10 @@ public class WithdrawalService : IWithdrawalService
         activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
         activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
         activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
-        await Task.Delay(3000);
+        await Task.Delay(1000);
 
         // mimic getting fraud force
         activity.SetTag(FpccAttributes.FpccFraudforceScore, -3);
-        await Task.Delay(5000);
+        await Task.Delay(2000);
     }
 }

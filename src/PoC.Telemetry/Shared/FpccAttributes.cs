@@ -39,6 +39,14 @@ public static class FpccAttributes
     public const string FpccWithdrawalAmount = "fpcc.withdrawal.amount";
 
     /// <summary>
+    /// The IBAN of the account associated with the withdrawal.
+    /// </summary>
+    /// <remarks>
+    /// This is the International Bank Account Number for the account from which funds are withdrawn.
+    /// </remarks>
+    public const string FpccWithdrawalIban = "fpcc.withdrawal.iban";
+
+    /// <summary>
     /// The unique identifier of the withdrawal.
     /// </summary>
     /// <remarks>
