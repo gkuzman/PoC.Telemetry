@@ -21,7 +21,7 @@ exporters:
   debug:
     verbosity: detailed
   otlp_http/honeycomb:
-    endpoint: https://api.oneycomb.io
+    endpoint: https://api.honeycomb.io
     headers:
       x-honeycomb-team: ${env:HONEYCOMB_API_KEY}
   otlp_http/aspire:

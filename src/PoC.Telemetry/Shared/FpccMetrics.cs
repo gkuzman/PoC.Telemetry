@@ -74,5 +74,14 @@ public static class FpccMetrics
     /// </remarks>
     public static readonly Histogram<double> FpccWithdrawalProcessingDuration =
         s_meter.CreateHistogram<double>("fpcc.withdrawal.processing.duration", "ms", "Duration of withdrawal processing in FPCC.");
+
+    /// <summary>
+    /// Total failed withdrawals processed by FPCC.
+    /// </summary>
+    /// <remarks>
+    /// Increment on any processing error. Alert if rate > 0.
+    /// </remarks>
+    public static readonly Counter<long> FpccWithdrawalProcessingError =
+        s_meter.CreateCounter<long>("fpcc.withdrawal.processing.error", "errors", "Total failed withdrawals processed by FPCC.");
 }
 

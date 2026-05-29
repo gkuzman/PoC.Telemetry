@@ -1,0 +1,263 @@
+@PAM_HostAddress = https://localhost:7292
+
+
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### advanced span no stop example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 5,
+  "amount": 5.00,
+  "withdrawalId": 12345
+}
+
+###
+
+###
+### slower request example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 7,
+  "amount": 7.00,
+  "withdrawalId": 1234567
+}
+
+###
+
+###
+### slower request example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 7,
+  "amount": 7.00,
+  "withdrawalId": 1234567
+}
+
+###
+
+###
+### slower request example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 7,
+  "amount": 7.00,
+  "withdrawalId": 1234567
+}
+
+###
+
+###
+### exception FPCC example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 8,
+  "amount": 8.00,
+  "withdrawalId": 12345678
+}
+
+###
+
+###
+### exception FPCC example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 8,
+  "amount": 8.00,
+  "withdrawalId": 12345678
+}
+
+###
+
+###
+### exception FPCC example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 8,
+  "amount": 8.00,
+  "withdrawalId": 12345678
+}
+
+###
+
+###
+### exception PAM example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 9,
+  "amount": 9.00,
+  "withdrawalId": 123456789
+}
+
+###
+
+###
+### exception PAM example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 9,
+  "amount": 9.00,
+  "withdrawalId": 123456789
+}
+
+###
+###
+### exception PAM example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 9,
+  "amount": 9.00,
+  "withdrawalId": 123456789
+}
+
+###
+
+###
+### exception PAM example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 9,
+  "amount": 9.00,
+  "withdrawalId": 123456789
+}
+
+###
+

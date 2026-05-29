@@ -78,3 +78,42 @@ Content-Type: application/json
 
 ###
 
+###
+### slower request example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 7,
+  "amount": 7.00,
+  "withdrawalId": 1234567
+}
+
+###
+
+###
+### exception FPCC example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 8,
+  "amount": 8.00,
+  "withdrawalId": 12345678
+}
+
+###
+
+###
+### exception PAM example
+POST {{PAM_HostAddress}}/api/Withdrawals/Initiate
+Content-Type: application/json
+
+{
+  "accountId": 9,
+  "amount": 9.00,
+  "withdrawalId": 123456789
+}
+
+###
+

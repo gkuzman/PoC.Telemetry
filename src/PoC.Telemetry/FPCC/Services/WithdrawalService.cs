@@ -38,6 +38,18 @@ public class WithdrawalService(IHttpClientFactory httpClientFactory) : IWithdraw
             {
                 await AdvancedNewRootSpanExample(request);
             }
+            else if (request.Amount == 7)
+            {
+                await SlowExample(request);
+            }
+            else if (request.Amount == 8)
+            {
+                await ExceptionExample(request);
+            }
+            else if (request.Amount == 9)
+            {
+                await ExceptionPamExample(request);
+            }
         }
         catch
         {
@@ -52,6 +64,88 @@ public class WithdrawalService(IHttpClientFactory httpClientFactory) : IWithdraw
             FpccMetrics.FpccWithdrawalProcessingDuration.Record(sw.Elapsed.TotalMilliseconds,
                 new KeyValuePair<string, object?>("status", status));
         }
+    }
+
+    private async Task ExceptionPamExample(InitiateWithdrawalRequest request)
+    {
+        using var activity = request.StartNewSpanFromRequest(TracingExtensions.Source);
+        try
+        {
+            activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
+            activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
+            activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
+            await Task.Delay(1000);
+            activity.Stop();
+
+            // mimic getting fraud force
+            var fraudSw = Stopwatch.StartNew();
+            using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce");
+            const int fraudScore = -3;
+            activity2.SetTag(FpccAttributes.FpccFraudforceScore, fraudScore);
+            await Task.Delay(2000);
+            fraudSw.Stop();
+            FpccMetrics.FpccFraudforceDuration.Record(fraudSw.Elapsed.TotalMilliseconds);
+            FpccMetrics.FpccFraudforceScore.Record(fraudScore);
+
+            await ConfirmWithdrawalAsync(request, activity.Context);
+        }
+        catch (Exception e)
+        {
+            activity.AddException(e);
+            throw;
+        }
+    }
+
+    private async Task ExceptionExample(InitiateWithdrawalRequest request)
+    {
+        using var activity = request.StartNewSpanFromRequest(TracingExtensions.Source);
+        try
+        {
+            activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
+            activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
+            activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
+            await Task.Delay(1000);
+            activity.Stop();
+
+            // mimic getting fraud force
+            var fraudSw = Stopwatch.StartNew();
+            using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce");
+            await Task.Delay(1000);
+            fraudSw.Stop();
+            FpccMetrics.FpccFraudforceDuration.Record(fraudSw.Elapsed.TotalMilliseconds);
+
+            throw new Exception("FraudForce not available");
+
+            await ConfirmWithdrawalAsync(request, activity.Context);
+        }
+        catch (Exception e)
+        {
+           activity.AddException(e);
+           FpccMetrics.FpccWithdrawalProcessingError.Add(1);
+           throw;
+        }
+    }
+
+    private async Task SlowExample(InitiateWithdrawalRequest request)
+    {
+        using var activity = request.StartNewSpanFromRequest(TracingExtensions.Source);
+        activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
+        activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
+        await Task.Delay(1000);
+        activity.Stop();
+
+        // mimic getting fraud force
+        var fraudSw = Stopwatch.StartNew();
+        using var activity2 = TracingExtensions.Source.StartActivity("Get FraudForce");
+        const int fraudScore = -3;
+        activity2.SetTag(FpccAttributes.FpccFraudforceScore, fraudScore);
+        await Task.Delay(7000);
+        fraudSw.Stop();
+        FpccMetrics.FpccFraudforceDuration.Record(fraudSw.Elapsed.TotalMilliseconds);
+        FpccMetrics.FpccFraudforceScore.Record(fraudScore);
+
+        await ConfirmWithdrawalAsync(request, activity.Context);
     }
 
     private async Task AdvancedNewRootSpanExample(InitiateWithdrawalRequest request)

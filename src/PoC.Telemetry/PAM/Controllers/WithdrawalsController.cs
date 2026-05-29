@@ -50,19 +50,30 @@ public sealed class WithdrawalsController : ControllerBase
         [FromBody] ConfirmWithdrawal request,
         CancellationToken cancellationToken)
     {
-        if (request.AccountId > 3)
+        using var activity = TracingExtensions.Source.StartActivity("Release wallet funds", ActivityKind.Server);
+        activity.SetTag(PamAttributes.PamWithdrawalAccountId, request.AccountId);
+        activity.SetTag(PamAttributes.PamWithdrawalId, request.WithdrawalId);
+
+        try
         {
-            using var activity = TracingExtensions.Source.StartActivity("Release wallet funds", ActivityKind.Server);
+            if (request.AccountId == 9)
+            {
+                throw new Exception("Account is terminated");
+            }
+
+            if (request.AccountId <= 0)
+                return BadRequest("AccountId must be a positive integer.");
+
+            if (request.WithdrawalId <= 0)
+                return BadRequest("WithdrawalId must be a positive integer.");
+
+            PamMetrics.PamWithdrawalConfirmed.Add(1);
+            return Accepted();
         }
-
-        if (request.AccountId <= 0)
-            return BadRequest("AccountId must be a positive integer.");
-
-        if (request.WithdrawalId <= 0)
-            return BadRequest("WithdrawalId must be a positive integer.");
-
-        PamMetrics.PamWithdrawalConfirmed.Add(1);
-        return Accepted();
+        catch (Exception e)
+        {
+            activity.AddException(e);
+            return StatusCode(500, e.Message);
+        }
     }
 }
-

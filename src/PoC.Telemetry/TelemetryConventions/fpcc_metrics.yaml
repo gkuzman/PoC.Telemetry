@@ -47,6 +47,18 @@
     stability: stable
     attributes: []
 
+  - id: metric.fpcc.withdrawal.processing.error
+    type: metric
+    metric_name: fpcc.withdrawal.processing.error
+    instrument: counter
+    unit: "errors"
+    brief: >
+      Total failed withdrawals processed by FPCC.
+    note: >
+      Increment on any processing error. Alert if rate > 0.
+    stability: stable
+    attributes: []
+
   - id: metric.fpcc.withdrawal.confirm.duration
     type: metric
     metric_name: fpcc.withdrawal.confirm.duration

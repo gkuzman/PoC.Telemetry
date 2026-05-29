@@ -38,3 +38,36 @@ groups:
         examples: ["DE89370400440532013000", "GB29NWBK60161331926819"]
         stability: stable
 
+      - id: pam.withdrawal.id
+        type: int
+        brief: >
+          The unique identifier of the withdrawal.
+        note: >
+          This is the system-generated withdrawal ID.
+        examples: [ 1, 2, 3 ]
+        stability: stable
+      - id: pam.withdrawal.amount
+        type: double
+        brief: >
+          The monetary amount of the withdrawal.
+        note: >
+          The amount requested for withdrawal, in the account's currency.
+        examples: [ 100.00, 250.50, 1000.00 ]
+        stability: stable
+      - id: pam.withdrawal.account_id
+        type: int
+        brief: >
+          The account identifier associated with the withdrawal.
+        note: >
+          This is the unique ID of the account from which funds are withdrawn.
+        examples: [ 1, 2, 3 ]
+        stability: stable
+      - id: pam.withdrawal.iban
+        type: string
+        brief: >
+          The IBAN of the account associated with the withdrawal.
+        note: >
+          This is the International Bank Account Number for the account from which funds are withdrawn.
+        examples: [ "DE89370400440532013000", "GB29NWBK60161331926819" ]
+        stability: stable
+
