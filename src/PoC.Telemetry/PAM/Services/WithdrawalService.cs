@@ -23,6 +23,7 @@ public class WithdrawalService : IWithdrawalService
 
     public async Task Initiate(InitiateWithdrawalMessageRequest request, string correlationId, CancellationToken cancellationToken)
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
         var account = await _dbContext.Accounts
             .Include(a => a.Wallet)
             .FirstOrDefaultAsync(a => a.Id == request.AccountId, cancellationToken);
@@ -62,5 +63,10 @@ public class WithdrawalService : IWithdrawalService
             nameof(InitiateWithdrawalMessage), request.AccountId, correlationId);
 
         await _senderService.Send(@event, Const.WithdrawalIncomingQueueName, cancellationToken);
+
+        sw.Stop();
+        PamMetrics.PamWithdrawalInitiated.Add(1);
+        PamMetrics.PamWithdrawalAmount.Record((double)request.Amount);
+        PamMetrics.PamWithdrawalInitiateDuration.Record(sw.Elapsed.TotalMilliseconds);
     }
 }

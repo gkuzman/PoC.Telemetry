@@ -4,5 +4,5 @@ namespace PAM;
 
 public static class TracingExtensions
 {
-    public static ActivitySource Source = new("PAM");
+    public static readonly ActivitySource Source = new("PAM");
 }

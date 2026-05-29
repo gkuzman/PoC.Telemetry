@@ -9,7 +9,7 @@ Content-Type: application/json
 {
   "accountId": 1,
   "amount": 1.00,
-  "withdrawalId": 12345
+  "withdrawalId": 1
 }
 
 ###
@@ -20,7 +20,7 @@ Content-Type: application/json
 {
   "accountId": 2,
   "amount": 2.00,
-  "withdrawalId": 12345
+  "withdrawalId": 12
 }
 
 ###
@@ -33,7 +33,7 @@ Content-Type: application/json
 {
   "accountId": 3,
   "amount": 3.00,
-  "withdrawalId": 12345
+  "withdrawalId": 123
 }
 
 ###
@@ -46,7 +46,7 @@ Content-Type: application/json
 {
   "accountId": 4,
   "amount": 4.00,
-  "withdrawalId": 12345
+  "withdrawalId": 1234
 }
 
 ###
@@ -73,7 +73,7 @@ Content-Type: application/json
 {
   "accountId": 6,
   "amount": 6.00,
-  "withdrawalId": 12345
+  "withdrawalId": 123456
 }
 
 ###

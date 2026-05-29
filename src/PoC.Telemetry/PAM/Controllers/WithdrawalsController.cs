@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PAM.Services;
+using Shared;
 using Shared.Models;
 
 namespace PAM.Controllers;
@@ -59,6 +60,8 @@ public sealed class WithdrawalsController : ControllerBase
 
         if (request.WithdrawalId <= 0)
             return BadRequest("WithdrawalId must be a positive integer.");
+
+        PamMetrics.PamWithdrawalConfirmed.Add(1);
         return Accepted();
     }
 }

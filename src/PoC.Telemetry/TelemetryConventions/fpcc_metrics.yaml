@@ -1,0 +1,73 @@
+﻿groups:
+  - id: metric.fpcc.withdrawal.processed
+    type: metric
+    metric_name: fpcc.withdrawal.processed
+    instrument: counter
+    unit: "withdrawals"
+    brief: >
+      Total withdrawals processed by FPCC.
+    note: >
+      Tagged by status (success/failure) to enable error-rate alerting.
+    stability: stable
+    attributes: []
+
+  - id: metric.fpcc.withdrawal.processing.duration
+    type: metric
+    metric_name: fpcc.withdrawal.processing.duration
+    instrument: histogram
+    unit: "ms"
+    brief: >
+      Duration of withdrawal processing in FPCC.
+    note: >
+      Measures end-to-end time from message receipt to completion, including FraudForce and confirm call.
+    stability: stable
+    attributes: []
+
+  - id: metric.fpcc.fraudforce.duration
+    type: metric
+    metric_name: fpcc.fraudforce.duration
+    instrument: histogram
+    unit: "ms"
+    brief: >
+      Duration of the FraudForce risk assessment check.
+    note: >
+      Measures latency of the fraud scoring operation.
+    stability: stable
+    attributes: []
+
+  - id: metric.fpcc.fraudforce.score
+    type: metric
+    metric_name: fpcc.fraudforce.score
+    instrument: histogram
+    unit: "{score}"
+    brief: >
+      Distribution of fraud risk scores returned by the FraudForce engine.
+    note: >
+      Scores typically range from -10 (high risk) to 10 (low risk).
+    stability: stable
+    attributes: []
+
+  - id: metric.fpcc.withdrawal.confirm.duration
+    type: metric
+    metric_name: fpcc.withdrawal.confirm.duration
+    instrument: histogram
+    unit: "ms"
+    brief: >
+      Duration of the confirm-withdrawal HTTP call to PAM.
+    note: >
+      Measures the round-trip latency of the POST api/Withdrawals/Confirm call.
+    stability: stable
+    attributes: []
+
+  - id: metric.fpcc.withdrawal.confirm.error
+    type: metric
+    metric_name: fpcc.withdrawal.confirm.error
+    instrument: counter
+    unit: "errors"
+    brief: >
+      Total failed confirm-withdrawal HTTP calls to PAM.
+    note: >
+      Increment on HTTP errors or exceptions when calling the PAM Confirm endpoint. Alert if rate > 0.
+    stability: stable
+    attributes: []
+

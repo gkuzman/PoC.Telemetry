@@ -4,5 +4,5 @@ namespace FPCC;
 
 public static class TracingExtensions
 {
-    public static ActivitySource Source = new("FPCC");
+    public static readonly ActivitySource Source = new("FPCC");
 }

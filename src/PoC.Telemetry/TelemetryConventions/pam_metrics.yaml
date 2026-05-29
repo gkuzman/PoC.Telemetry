@@ -1,0 +1,49 @@
+﻿groups:
+  - id: metric.pam.withdrawal.initiated
+    type: metric
+    metric_name: pam.withdrawal.initiated
+    instrument: counter
+    unit: "withdrawals"
+    brief: >
+      Total withdrawals initiated via the PAM API.
+    note: >
+      Incremented when a new withdrawal request is successfully processed and published to Service Bus.
+    stability: stable
+    attributes: []
+
+  - id: metric.pam.withdrawal.confirmed
+    type: metric
+    metric_name: pam.withdrawal.confirmed
+    instrument: counter
+    unit: "withdrawals"
+    brief: >
+      Total withdrawals confirmed via the PAM API.
+    note: >
+      Incremented when FPCC calls back to confirm a withdrawal has been processed.
+    stability: stable
+    attributes: []
+
+  - id: metric.pam.withdrawal.amount
+    type: metric
+    metric_name: pam.withdrawal.amount
+    instrument: histogram
+    unit: "{currency}"
+    brief: >
+      Distribution of withdrawal amounts.
+    note: >
+      Records the monetary amount of each withdrawal for percentile analysis and anomaly detection.
+    stability: stable
+    attributes: []
+
+  - id: metric.pam.withdrawal.initiate.duration
+    type: metric
+    metric_name: pam.withdrawal.initiate.duration
+    instrument: histogram
+    unit: "ms"
+    brief: >
+      Duration of the Initiate withdrawal flow in PAM.
+    note: >
+      Measures end-to-end time of the Initiate operation including DB writes and Service Bus publish.
+    stability: stable
+    attributes: []
+

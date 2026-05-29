@@ -37,6 +37,18 @@ templates:
       })
     application_mode: each
 
+  - pattern: SemanticConventionsMetrics.cs.j2
+    filter: >
+      semconv_grouped_metrics({
+        "exclude_deprecated": false,
+        "exclude_stability": [],
+      }) | map({
+          root_namespace: .root_namespace,
+          metrics: .metrics
+      })
+    application_mode: each
+
+
 text_maps:
   csharp_type:
     int: int

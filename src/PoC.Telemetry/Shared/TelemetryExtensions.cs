@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Shared.Messaging;
@@ -27,7 +28,10 @@ public static class TelemetryExtensions
                     .AddSource(TraceableRequestExtensions.Source.Name)
                     .AddSource(ServiceBusDiagnosticSettings.Source.Name);
             })
-            .WithMetrics()
+            .WithMetrics(metrics =>
+            {
+                metrics.AddMeter(serviceName);
+            })
             .WithLogging();
         AppContext.SetSwitch("Azure.Experimental.EnableActivitySource", true);
         openTelemetryBuilder.WithTracing(builder => builder.AddSource("Azure.Messaging.ServiceBus"));
