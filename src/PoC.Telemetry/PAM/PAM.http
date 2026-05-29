@@ -58,7 +58,7 @@ Content-Type: application/json
 
 {
   "accountId": 5,
-  "amount": 4.00,
+  "amount": 5.00,
   "withdrawalId": 12345
 }
 

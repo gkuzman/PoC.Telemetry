@@ -20,6 +20,7 @@ public static class TelemetryExtensions
                 builder
                     .AddSource(serviceName)
                     .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
                     .AddEntityFrameworkCoreInstrumentation();
 
                 builder

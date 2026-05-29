@@ -43,6 +43,8 @@ var fpcc = builder.AddProject<Projects.FPCC>("FPCC")
     .WaitFor(dbFpcc)
     .WithReference(serviceBus)
     .WaitFor(serviceBus)
+    .WithReference(pam)
+    .WaitFor(pam)
     .WithEnvironment("CUSTOM_OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4318");
 
 builder.Build().Run();

@@ -26,6 +26,8 @@
     <ItemGroup>
       <Folder Include="Factories\" />
       <Folder Include="Handlers\" />
+      <Folder Include="Models\" />
+      <Folder Include="Requests\" />
     </ItemGroup>
 
 </Project>

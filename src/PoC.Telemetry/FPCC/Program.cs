@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddOpenTelemetry(TracingExtensions.Source.Name);
+builder.Services.AddServiceDiscovery();
 builder.AddSqlServerDbContext<FpccDbContext>("fpcc-db");
 builder.AddAzureServiceBusClient("servicebus");
 
@@ -18,6 +19,10 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddServiceBusMessageHandler<InitiateWithdrawalMessage, InitiateWithdrawalMessageHandler>(
     queueOrTopicName: Const.WithdrawalIncomingQueueName);
+builder.Services.AddHttpClient("PAM", client =>
+{
+    client.BaseAddress = new Uri("https+http://PAM");
+}).AddServiceDiscovery();
 builder.Services.AddScoped<IWithdrawalService, WithdrawalService>();
 
 var app = builder.Build();

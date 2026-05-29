@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using PAM;
 using PAM.DB;
 using PAM.Services;
 using Shared;
@@ -7,7 +8,7 @@ using Shared.Messaging;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddOpenTelemetry("PAM");
+builder.Services.AddOpenTelemetry(TracingExtensions.Source.Name);
 builder.AddSqlServerDbContext<PamDbContext>("pam-db");
 builder.AddAzureServiceBusClient("servicebus");
 builder.Services.AddServiceBusSenderService();

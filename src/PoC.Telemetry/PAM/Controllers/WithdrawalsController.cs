@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PAM.Services;
+using Shared.Models;
 
 namespace PAM.Controllers;
 
@@ -37,6 +39,26 @@ public sealed class WithdrawalsController : ControllerBase
 
         var correlationId = HttpContext.TraceIdentifier;
         await _withdrawalService.Initiate(request, correlationId, cancellationToken);
+        return Accepted();
+    }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Confirm(
+        [FromBody] ConfirmWithdrawal request,
+        CancellationToken cancellationToken)
+    {
+        if (request.AccountId > 3)
+        {
+            using var activity = TracingExtensions.Source.StartActivity("Release wallet funds", ActivityKind.Server);
+        }
+
+        if (request.AccountId <= 0)
+            return BadRequest("AccountId must be a positive integer.");
+
+        if (request.WithdrawalId <= 0)
+            return BadRequest("WithdrawalId must be a positive integer.");
         return Accepted();
     }
 }
