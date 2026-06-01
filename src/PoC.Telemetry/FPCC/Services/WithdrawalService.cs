@@ -198,6 +198,7 @@ public class WithdrawalService(IHttpClientFactory httpClientFactory) : IWithdraw
         activity.SetTag(FpccAttributes.FpccWithdrawalId, request.WithdrawalId);
         activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
         activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
+        activity.SetTag(FpccAttributes.FpccWithdrawalIban, "NL18RABO0123459876");
         await Task.Delay(1000);
 
         // mimic getting fraud force

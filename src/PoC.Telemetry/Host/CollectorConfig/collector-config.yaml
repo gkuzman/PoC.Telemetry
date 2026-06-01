@@ -6,17 +6,6 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 
-processors:
-  transform/mask_pii:
-    error_mode: ignore
-    log_statements:
-      - context: log
-        statements:
-          # Mask IBAN in all log attributes (covers structured fields like iban, accountNumber, etc.)
-          - replace_all_patterns(attributes, "value", "\\b[A-Z]{2}[0-9]{2}[A-Z0-9]{4}[0-9]{7}([A-Z0-9]?){0,16}\\b", "***IBAN***")
-          # Mask IBAN embedded in the log body string
-          - replace_pattern(body, "\\b[A-Z]{2}[0-9]{2}[A-Z0-9]{4}[0-9]{7}([A-Z0-9]?){0,16}\\b", "***IBAN***")
-
 exporters:
   debug:
     verbosity: detailed
@@ -40,6 +29,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
+      processors: [transform/mask_pii]
       exporters: [debug, otlp_http/aspire, otlp_http/honeycomb]
     metrics:
       receivers: [otlp]

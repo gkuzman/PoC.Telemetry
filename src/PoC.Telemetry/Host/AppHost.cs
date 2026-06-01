@@ -25,6 +25,8 @@ var serviceBus = builder.AddAzureServiceBus("servicebus")
 var queue = serviceBus.AddServiceBusQueue("withdrawal-incoming");
 var collector = builder.AddContainer("otel-collector", "otel/opentelemetry-collector-contrib", "0.152.0")
     .WithBindMount("./CollectorConfig/collector-config.yaml", "/etc/otelcol-contrib/config.yaml")
+    .WithBindMount("./CollectorConfig/pii-masking.yaml", "/etc/otelcol-contrib/pii-masking.yaml")
+    .WithArgs("--config", "/etc/otelcol-contrib/config.yaml", "--config", "/etc/otelcol-contrib/pii-masking.yaml")
     .WithEndpoint(port: 4317, targetPort: 4317, name: "grpc", scheme: "http", isProxied: false)
     .WithEndpoint(port: 4318, targetPort: 4318, name: "http", scheme: "http", isProxied: false)
     .WithEnvironment("DOTNET_DASHBOARD_OTLP_HTTP_ENDPOINT_URL", $"http://{hostIp}:16175")
