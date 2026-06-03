@@ -91,7 +91,9 @@ public class WithdrawalService(IHttpClientFactory httpClientFactory) : IWithdraw
         }
         catch (Exception e)
         {
+            activity.SetStatus(ActivityStatusCode.Error, e.Message);
             activity.AddException(e);
+            FpccMetrics.FpccWithdrawalProcessingError.Add(1);
             throw;
         }
     }
@@ -105,7 +107,6 @@ public class WithdrawalService(IHttpClientFactory httpClientFactory) : IWithdraw
             activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
             activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
             await Task.Delay(1000);
-            activity.Stop();
 
             // mimic getting fraud force
             var fraudSw = Stopwatch.StartNew();
@@ -115,11 +116,10 @@ public class WithdrawalService(IHttpClientFactory httpClientFactory) : IWithdraw
             FpccMetrics.FpccFraudforceDuration.Record(fraudSw.Elapsed.TotalMilliseconds);
 
             throw new Exception("FraudForce not available");
-
-            await ConfirmWithdrawalAsync(request, activity.Context);
         }
         catch (Exception e)
         {
+           activity.SetStatus(ActivityStatusCode.Error, e.Message);
            activity.AddException(e);
            FpccMetrics.FpccWithdrawalProcessingError.Add(1);
            throw;
@@ -133,7 +133,6 @@ public class WithdrawalService(IHttpClientFactory httpClientFactory) : IWithdraw
         activity.SetTag(FpccAttributes.FpccWithdrawalAmount, request.Amount);
         activity.SetTag(FpccAttributes.FpccWithdrawalAccountId, request.AccountId);
         await Task.Delay(1000);
-        activity.Stop();
 
         // mimic getting fraud force
         var fraudSw = Stopwatch.StartNew();

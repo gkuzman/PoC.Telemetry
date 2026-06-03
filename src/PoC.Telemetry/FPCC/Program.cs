@@ -30,7 +30,21 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<FpccDbContext>();
-    db.Database.EnsureCreated();
+    var retries = 5;
+    for (var i = 0; i < retries; i++)
+    {
+        try
+        {
+            db.Database.EnsureCreated();
+            break;
+        }
+        catch (Exception ex) when (i < retries - 1)
+        {
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            logger.LogWarning(ex, "Database creation attempt {Attempt} failed, retrying...", i + 1);
+            await Task.Delay(TimeSpan.FromSeconds(Math.Pow(2, i)));
+        }
+    }
 }
 
 // Configure the HTTP request pipeline.

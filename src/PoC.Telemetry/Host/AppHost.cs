@@ -40,13 +40,17 @@ var pam = builder.AddProject<Projects.PAM>("PAM")
     .WaitFor(serviceBus)
     .WithEnvironment("CUSTOM_OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4318");
 
-var fpcc = builder.AddProject<Projects.FPCC>("FPCC")
-    .WithReference(dbFpcc)
-    .WaitFor(dbFpcc)
-    .WithReference(serviceBus)
-    .WaitFor(serviceBus)
-    .WithReference(pam)
-    .WaitFor(pam)
-    .WithEnvironment("CUSTOM_OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4318");
+for (var i = 0; i < 3; i++)
+{
+    var fpcc = builder.AddProject<Projects.FPCC>($"FPCC-{i}")
+        .WithReference(dbFpcc)
+        .WaitFor(dbFpcc)
+        .WithReference(serviceBus)
+        .WaitFor(serviceBus)
+        .WithReference(pam)
+        .WaitFor(pam)
+        .WithEnvironment("CUSTOM_OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4318");
+}
+
 
 builder.Build().Run();
