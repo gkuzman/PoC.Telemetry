@@ -18,10 +18,10 @@ In a monolith, debugging is straightforward — one process, one log file, one d
 
 ## What is Distributed Tracing?
 
-When a user clicks "Withdraw €500", that request flows through:
+When a user clicks "Place Order", that request flows through:
 
 ```
-Browser → PAM API → Database → Service Bus → FPCC Consumer → FraudForce → Database → PAM Callback
+Browser → Order API → Database → Message Broker → Payment Service → Fraud Check → Database → Order Callback
 ```
 
 **Distributed tracing** follows that request across every service boundary, every queue, every database call — and stitches it into a single, end-to-end timeline. Each step is a **span**, and the full journey is a **trace**.
@@ -29,11 +29,11 @@ Browser → PAM API → Database → Service Bus → FPCC Consumer → FraudForc
 Without it, you have logs from 5 services with no way to connect them. With it, you see:
 
 - *This* request took 3.2 seconds
-- 2.8 seconds were spent in FraudForce
+- 2.8 seconds were spent in the fraud check
 - The DB write took 12ms
-- The Service Bus publish took 45ms
+- The message publish took 45ms
 
-It turns "the system is slow" into "FraudForce is slow for high-value withdrawals."
+It turns "the system is slow" into "fraud checks are slow for high-value orders."
 
 ---
 
@@ -49,15 +49,15 @@ OpenTelemetry is a **vendor-neutral, open-source observability framework** — t
 
 ### 1. Traces & Spans
 
-- A **trace** represents the entire journey of a request through your distributed system — from the user clicking "Withdraw" to the database write and the message published to Service Bus.
+- A **trace** represents the entire journey of a request through your distributed system — from the user clicking a button to the database write and the message published to a broker.
 - A trace is composed of **spans**. Each span represents a single unit of work: an HTTP call, a DB query, a message publish.
 - Spans have: **name, start/end time, attributes (key-value pairs), status, parent span ID**.
 - Spans form a **tree** — the root span is the entry point, child spans are downstream operations.
 - **Context propagation** (W3C `traceparent` header) is what stitches spans across service boundaries. Without it, you just have isolated logs.
 
 ```
-[PAM: POST /withdrawals]  ──►  [FPCC: ProcessWithdrawal]  ──►  [DB: INSERT]
-       root span                     child span                  child span
+[Service A: POST /orders]  ──►  [Service B: ProcessOrder]  ──►  [DB: INSERT]
+       root span                      child span                  child span
 ```
 
 ### 2. Metrics
@@ -68,17 +68,17 @@ Three instrument types:
 
 - **Counter** — only goes **up**. Use for things you count.
   ```csharp
-  var withdrawalCounter = meter.CreateCounter<long>("withdrawals.total");
-  withdrawalCounter.Add(1, new("status", "success"));
+  var orderCounter = meter.CreateCounter<long>("orders.total");
+  orderCounter.Add(1, new("status", "success"));
   ```
-  *"We processed 14,302 withdrawals today."*
+  *"We processed 14,302 orders today."*
 
 - **Histogram** — records a **distribution of values**. Use for durations, sizes, latencies.
   ```csharp
-  var durationHistogram = meter.CreateHistogram<double>("withdrawal.duration_ms");
-  durationHistogram.Record(42.5, new("method", "card"));
+  var durationHistogram = meter.CreateHistogram<double>("order.duration_ms");
+  durationHistogram.Record(42.5, new("payment_method", "card"));
   ```
-  *"P50 withdrawal latency is 45ms, P99 is 320ms."*
+  *"P50 order latency is 45ms, P99 is 320ms."*
 
 - **Gauge (ObservableGauge)** — a **point-in-time snapshot** that can go up or down. Use for current state.
   ```csharp
@@ -131,10 +131,10 @@ OTel has two layers — and understanding the split is key:
   ```
   This is your **80% for free** — no code changes, immediate visibility.
 
-- **Manual instrumentation** — for your **business logic**. OTel can't know that a span should be called "Get FraudForce" or that `withdrawal.amount` is a meaningful attribute. You add these yourself:
+- **Manual instrumentation** — for your **business logic**. OTel can't know that a span should be called "Validate Payment" or that `order.amount` is a meaningful attribute. You add these yourself:
   ```csharp
-  using var activity = source.StartActivity("Get FraudForce");
-  activity?.SetTag("fpcc.fraudforce.score", score);
+  using var activity = source.StartActivity("Validate Payment");
+  activity?.SetTag("order.amount", amount);
   ```
 
 > **The mental model:** Auto-instrumentation shows you the *plumbing* (HTTP, DB, messaging). Manual instrumentation shows you the *business flow*.
